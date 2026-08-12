@@ -66,18 +66,22 @@ def druckeRangliste(wettkampf, titel, kategorie=""):
 
 # Schlussrangliste in ein CSV-File schreiben (kann mit Excel geoeffnet werden)
 def speichereRangliste(wettkampf, dateiname):
-    datei = open(dateiname, "w", encoding="utf-8")
-    datei.write("Kategorie;Rang;Startnummer;Vorname;Nachname;Punkte;Faktor;Total\n")
-    for kategorie in ["U18", "Elite", "Ue50"]:
-        rang = 1
-        for teilnehmer in wettkampf.getRangliste(kategorie):
-            datei.write(f"{kategorie};{rang};{teilnehmer.getStartnummer()};"
-                        f"{teilnehmer.getVorname()};{teilnehmer.getNachname()};"
-                        f"{teilnehmer.getPunkte()};{teilnehmer.getFaktor(JAHR):.2f};"
-                        f"{teilnehmer.getTotal(JAHR):.2f}\n")
-            rang = rang + 1
-    datei.close()
-    print("Die Schlussrangliste wurde in " + dateiname + " gespeichert.")
+    try:
+        datei = open(dateiname, "w", encoding="utf-8")
+        datei.write("Kategorie;Rang;Startnummer;Vorname;Nachname;Punkte;Faktor;Total\n")
+        for kategorie in ["U18", "Elite", "Ue50"]:
+            rang = 1
+            for teilnehmer in wettkampf.getRangliste(kategorie):
+                datei.write(f"{kategorie};{rang};{teilnehmer.getStartnummer()};"
+                            f"{teilnehmer.getVorname()};{teilnehmer.getNachname()};"
+                            f"{teilnehmer.getPunkte()};{teilnehmer.getFaktor(JAHR):.2f};"
+                            f"{teilnehmer.getTotal(JAHR):.2f}\n")
+                rang = rang + 1
+        datei.close()
+        print("Die Schlussrangliste wurde in " + dateiname + " gespeichert.")
+    except OSError:
+        print("Fehler: Das File " + dateiname + " konnte nicht gespeichert werden. "
+              "Ist es vielleicht gerade in Excel geoeffnet?")
 
 
 def main():
