@@ -119,5 +119,10 @@ def main():
     db.erstelleTabellen()
     db.speichereWettkampf(wettkampf)
 
+    # 7. Kontrolle: den gespeicherten Inhalt der Datenbank wieder anzeigen
+    print()
+    print("=== Kontrolle: Inhalt der Datenbank ===")
+    db.zeigeDatenbank()
+
 
 main()
