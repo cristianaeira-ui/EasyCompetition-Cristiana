@@ -81,8 +81,12 @@ def speichereRangliste(wettkampf, dateiname):
 
 
 def main():
-    # 1. Wettkampf erzeugen
-    wettkampf = w.Wettkampf("SWS Sommer-Event", JAHR, 3)
+    # 1. Wettkampf erzeugen (nur 3 bis 5 Durchgaenge sind erlaubt)
+    try:
+        wettkampf = w.Wettkampf("SWS Sommer-Event", JAHR, 3)
+    except ValueError as fehler:
+        print("Fehler: " + str(fehler))
+        return                      # Programm beenden, weil kein Wettkampf da ist
 
     # 2. Teilnehmer einlesen und anmelden
     for teilnehmer in leseTeilnehmer("teilnehmer.csv"):

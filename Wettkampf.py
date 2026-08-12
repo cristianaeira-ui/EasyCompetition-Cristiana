@@ -4,6 +4,9 @@
 class Wettkampf():
 
     def __init__(self, name, jahr, anzahlDurchgaenge):
+        # Pruefung: erlaubt sind nur 3 bis 5 Durchgaenge (Anforderung F4)
+        if anzahlDurchgaenge < 3 or anzahlDurchgaenge > 5:
+            raise ValueError("Die Anzahl Durchgaenge muss zwischen 3 und 5 liegen.")
         self.__name = name
         self.__jahr = jahr
         self.__anzahlDurchgaenge = anzahlDurchgaenge
