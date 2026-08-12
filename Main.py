@@ -7,6 +7,7 @@ import Wettkampf as w
 import Datenbank as db
 
 JAHR = 2026                 # Turnierjahr, wird fuer die Altersberechnung gebraucht
+DURCHGAENGE = 3             # Anzahl Durchgaenge des Wettkampfs (erlaubt sind 3 bis 5)
 
 
 # Teilnehmer aus dem CSV-File lesen
@@ -87,7 +88,7 @@ def speichereRangliste(wettkampf, dateiname):
 def main():
     # 1. Wettkampf erzeugen (nur 3 bis 5 Durchgaenge sind erlaubt)
     try:
-        wettkampf = w.Wettkampf("SWS Sommer-Event", JAHR, 3)
+        wettkampf = w.Wettkampf("SWS Sommer-Event", JAHR, DURCHGAENGE)
     except ValueError as fehler:
         print("Fehler: " + str(fehler))
         return                      # Programm beenden, weil kein Wettkampf da ist
