@@ -67,31 +67,23 @@ def druckeRangliste(wettkampf, titel, kategorie=""):
 
 # Schlussrangliste in ein CSV-File schreiben (kann mit Excel geoeffnet werden)
 def speichereRangliste(wettkampf, dateiname):
-    try:
-        datei = open(dateiname, "w", encoding="utf-8")
-        datei.write("Kategorie;Rang;Startnummer;Vorname;Nachname;Punkte;Faktor;Total\n")
-        for kategorie in ["U18", "Elite", "Ue50"]:
-            rang = 1
-            for teilnehmer in wettkampf.getRangliste(kategorie):
-                datei.write(f"{kategorie};{rang};{teilnehmer.getStartnummer()};"
-                            f"{teilnehmer.getVorname()};{teilnehmer.getNachname()};"
-                            f"{teilnehmer.getPunkte()};{teilnehmer.getFaktor(JAHR):.2f};"
-                            f"{teilnehmer.getTotal(JAHR):.2f}\n")
-                rang = rang + 1
-        datei.close()
-        print("Die Schlussrangliste wurde in " + dateiname + " gespeichert.")
-    except OSError:
-        print("Fehler: Das File " + dateiname + " konnte nicht gespeichert werden. "
-              "Ist es vielleicht gerade in Excel geoeffnet?")
+    datei = open(dateiname, "w", encoding="utf-8")
+    datei.write("Kategorie;Rang;Startnummer;Vorname;Nachname;Punkte;Faktor;Total\n")
+    for kategorie in ["U18", "Elite", "Ue50"]:
+        rang = 1
+        for teilnehmer in wettkampf.getRangliste(kategorie):
+            datei.write(f"{kategorie};{rang};{teilnehmer.getStartnummer()};"
+                        f"{teilnehmer.getVorname()};{teilnehmer.getNachname()};"
+                        f"{teilnehmer.getPunkte()};{teilnehmer.getFaktor(JAHR):.2f};"
+                        f"{teilnehmer.getTotal(JAHR):.2f}\n")
+            rang = rang + 1
+    datei.close()
+    print("Die Schlussrangliste wurde in " + dateiname + " gespeichert.")
 
 
 def main():
-    # 1. Wettkampf erzeugen (nur 3 bis 5 Durchgaenge sind erlaubt)
-    try:
-        wettkampf = w.Wettkampf("SWS Sommer-Event", JAHR, DURCHGAENGE)
-    except ValueError as fehler:
-        print("Fehler: " + str(fehler))
-        return                      # Programm beenden, weil kein Wettkampf da ist
+    # 1. Wettkampf erzeugen
+    wettkampf = w.Wettkampf("SWS Sommer-Event", JAHR, DURCHGAENGE)
 
     # 2. Teilnehmer einlesen und anmelden
     for teilnehmer in leseTeilnehmer("teilnehmer.csv"):
@@ -119,11 +111,6 @@ def main():
     speichereRangliste(wettkampf, "schlussrangliste.csv")
     db.erstelleTabellen()
     db.speichereWettkampf(wettkampf)
-
-    # 7. Kontrolle: den gespeicherten Inhalt der Datenbank wieder anzeigen
-    print()
-    print("=== Kontrolle: Inhalt der Datenbank ===")
-    db.zeigeDatenbank()
 
 
 main()
