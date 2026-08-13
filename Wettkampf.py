@@ -1,9 +1,17 @@
 # -*- coding: utf-8 -*-
 # Klasse Wettkampf: haelt die Liste der Teilnehmer und erstellt die Rangliste.
 
+# Ein Turnier hat drei bis fuenf Durchgaenge (Anforderung F4)
+MIN_DURCHGAENGE = 3
+MAX_DURCHGAENGE = 5
+
+
 class Wettkampf():
 
     def __init__(self, name, jahr, anzahlDurchgaenge):
+        # Pruefen, ob die Anzahl Durchgaenge erlaubt ist
+        if anzahlDurchgaenge < MIN_DURCHGAENGE or anzahlDurchgaenge > MAX_DURCHGAENGE:
+            raise ValueError("Ein Turnier muss 3 bis 5 Durchgaenge haben.")
         self.__name = name
         self.__jahr = jahr
         self.__anzahlDurchgaenge = anzahlDurchgaenge
