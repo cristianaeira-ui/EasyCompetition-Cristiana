@@ -36,13 +36,16 @@ def leseZahl(text):
             print("      Das war keine Zahl. Bitte nochmals versuchen.")
 
 
-# Anzahl Durchgaenge abfragen und pruefen (3 bis 5)
+# Anzahl Durchgaenge abfragen und pruefen.
+# Die Grenzen stehen als Konstanten in Wettkampf.py und werden von dort geholt.
 def leseAnzahlDurchgaenge():
     while True:
-        anzahl = leseZahl("Anzahl Durchgaenge (3 bis 5): ")
-        if anzahl >= 3 and anzahl <= 5:
+        anzahl = leseZahl("Anzahl Durchgaenge (" + str(w.MIN_DURCHGAENGE)
+                          + " bis " + str(w.MAX_DURCHGAENGE) + "): ")
+        if anzahl >= w.MIN_DURCHGAENGE and anzahl <= w.MAX_DURCHGAENGE:
             return anzahl
-        print("      Bitte eine Zahl zwischen 3 und 5 eingeben.")
+        print("      Bitte eine Zahl zwischen " + str(w.MIN_DURCHGAENGE)
+              + " und " + str(w.MAX_DURCHGAENGE) + " eingeben.")
 
 
 # Teilnehmerliste mit Kategorie und Faktor ausgeben
@@ -120,6 +123,11 @@ def main():
     speichereRangliste(wettkampf, "schlussrangliste.csv")
     db.erstelleTabellen()
     db.speichereWettkampf(wettkampf)
+
+    # 7. Zur Kontrolle die gespeicherten Teilnehmer aus der Datenbank lesen
+    print()
+    print("Kontrolle - Inhalt der Tabelle teilnehmer:")
+    db.zeigeDatenbank()
 
 
 main()

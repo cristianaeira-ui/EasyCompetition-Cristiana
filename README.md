@@ -7,24 +7,26 @@ gibt am Schluss die Ranglisten aus. Die Resultate werden zusätzlich als
 CSV-Datei und in einer SQLite-Datenbank gespeichert.
 
 Das Programm entstand als Studienarbeit im CAS IT Principles (Berner
-Fachhochschule), Modul «Programmierung mit Python».
+Fachhochschule), Modul «Programmieren».
 
 ## Was das Programm macht
 
-1. Liest die Teilnehmerliste aus `teilnehmer.csv` ein.
-2. Teilt die Teilnehmenden nach Jahrgang in drei Kategorien ein:
+1. Fragt beim Start, aus wie vielen Durchgängen das Turnier besteht (3 bis 5).
+2. Liest die Teilnehmerliste aus `teilnehmer.csv` ein.
+3. Teilt die Teilnehmenden nach Jahrgang in drei Kategorien ein:
    - **U18** – Wettkampfalter 17 oder jünger
    - **Elite** – 18 bis 49 Jahre
    - **Ue50** – 50 Jahre oder älter
-3. Erfasst die Punkte für drei Durchgänge und zeigt nach jedem Durchgang den
+4. Erfasst die Punkte jedes Durchgangs und zeigt danach jeweils den
    Zwischenstand.
-4. Rechnet zum Ausgleich der Alters-Nachteile einen Bonus-Faktor dazu:
+5. Rechnet zum Ausgleich der Alters-Nachteile einen Bonus-Faktor dazu:
    - **U18:** Punkte × (1 + (17 − Alter) / 10)
    - **Ue50:** Punkte × (1 + (Alter − 50) / 50)
    - **Elite:** Faktor 1.0 (kein Bonus)
-5. Gibt am Schluss die Rangliste jeder Kategorie aus.
-6. Speichert die Schlussrangliste als `schlussrangliste.csv` (für Excel) und
-   alle Daten in der Datenbank `wettkampf.db`.
+6. Gibt am Schluss die Rangliste jeder Kategorie aus.
+7. Speichert die Schlussrangliste als `schlussrangliste.csv` (für Excel) und
+   alle Daten in der Datenbank `wettkampf.db`. Zur Kontrolle liest es die
+   gespeicherten Teilnehmenden anschliessend wieder aus der Datenbank.
 
 Wichtig: Gespeichert werden immer nur die **Rohpunkte**. Der Bonus-Faktor wird
 erst bei der Auswertung dazugerechnet.
@@ -39,7 +41,7 @@ Das Programm besteht aus fünf Python-Dateien und einer Eingabedatei:
 | `Teilnehmer.py` | erbt von `Person`; Startnummer, Punkte, Kategorie, Faktor |
 | `Wettkampf.py` | hält die Liste der Teilnehmenden und erstellt die Rangliste |
 | `Datenbank.py` | SQLite: Tabellen erzeugen, speichern, lesen |
-| `Main.py` | Hauptprogramm: Ablauf, CSV lesen, Ausgabe |
+| `Main.py` | Hauptprogramm: Ablauf, CSV lesen, Ausgabe, CSV schreiben |
 | `teilnehmer.csv` | Eingabedatei mit den Teilnehmenden |
 
 Die Zuständigkeiten sind getrennt: Das **Rechnen** steckt in den Klassen, das
@@ -69,9 +71,10 @@ Es muss nichts installiert werden. `sqlite3` ist in Python bereits eingebaut.
 python Main.py
 ```
 
-Das Programm fragt für jeden Teilnehmer und jeden Durchgang die Punkte ab. Gibt
-man statt einer Zahl einen Buchstaben ein, fragt das Programm einfach nochmals –
-es stürzt nicht ab.
+Zuerst fragt das Programm die Anzahl Durchgänge ab; erlaubt sind 3 bis 5.
+Danach fragt es für jeden Teilnehmer und jeden Durchgang die Punkte ab. Gibt man
+statt einer Zahl einen Buchstaben ein, fragt das Programm einfach nochmals – es
+stürzt nicht ab.
 
 ## Erzeugte Dateien
 
@@ -91,3 +94,12 @@ Startnummer;Vorname;Nachname;Geburtsjahr
 1;Anna;Berger;2010
 2;Luca;Frei;2009
 ```
+
+Die Datei darf keine Leerzeilen enthalten, und jede Zeile braucht alle vier
+Werte.
+
+## Hinweis zur Entstehung
+
+Das Programm wurde mit Unterstützung von künstlicher Intelligenz (Claude und
+Claude Code von Anthropic) erstellt. Die Einzelheiten dazu stehen in Kapitel 1.4
+und in Anhang C der Projektdokumentation.
